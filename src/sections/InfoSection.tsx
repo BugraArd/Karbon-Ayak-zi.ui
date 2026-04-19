@@ -206,8 +206,8 @@ export function InfoSection() {
 
         {/* Timeline Dynamic Section */}
         {infoConfig.timeline.length > 0 && (
-          <div className="fade-up pt-12" style={{ transitionDelay: '0.25s', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-            <h4 className="text-xs text-white/40 uppercase tracking-widest mb-12 text-center">Zaman Çizelgesi</h4>
+          <div id="news-timeline" className="fade-up pt-12" style={{ transitionDelay: '0.25s', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+            <h4 className="text-xs text-white/40 uppercase tracking-widest mb-12 text-center">Haber Çizelgesi</h4>
             
             {/* Timeline Bar */}
             <div className="relative mb-14 max-w-5xl mx-auto px-4 md:px-12">

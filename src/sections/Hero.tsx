@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { heroConfig } from '../config';
 import { smoothScrollToSection } from '../lib/smoothScroll';
+import { useTheme } from '../lib/ThemeContext';
 
 function useCountUp(target: number, duration = 2000, start = false) {
   const [count, setCount] = useState(0);
@@ -26,9 +27,9 @@ function useCountUp(target: number, duration = 2000, start = false) {
 }
 
 export function Hero({ isReady }: { isReady: boolean }) {
-  // Null check: if config is empty, render nothing
   if (!heroConfig.mainTitle) return null;
 
+  const { theme } = useTheme();
   const [phase, setPhase] = useState(0);
   // phase 0: hidden, 1: bg visible, 2: title, 3: cta, 4: stats counting
 
@@ -179,7 +180,10 @@ export function Hero({ isReady }: { isReady: boolean }) {
       </div>
 
 
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0a1628] to-transparent" />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-40"
+        style={{ background: `linear-gradient(to top, ${theme === 'dark' ? '#0a1628' : '#f2f1ed'}, transparent)`, transition: 'background 0.35s ease' }}
+      />
 
 
       {/* Side decorative */}

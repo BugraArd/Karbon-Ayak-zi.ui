@@ -73,6 +73,7 @@
     background-color: var(--page-bg);
     color: #ffffff;
     overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -583,4 +584,76 @@
     background: rgba(16, 185, 129, 0.3);
     color: white;
   }
+}
+
+/* ─── Açık / Siyah-Beyaz Tema ──────────────────────────────────────────────── */
+html[data-theme="light"] {
+  --page-bg: #f2f1ed;
+  color-scheme: light;
+}
+
+html[data-theme="light"] body {
+  background-color: #f2f1ed;
+  color: #1c1c1c;
+}
+
+/* Ana kapsayıcı arka plan */
+html[data-theme="light"] .bg-\[#0a1628\] {
+  background-color: #f2f1ed !important;
+}
+
+/* Metin renkleri */
+html[data-theme="light"] .text-white           { color: #1c1c1c !important; }
+html[data-theme="light"] .text-white\/80        { color: rgba(28,28,28,0.82) !important; }
+html[data-theme="light"] .text-white\/75        { color: rgba(28,28,28,0.77) !important; }
+html[data-theme="light"] .text-white\/70        { color: rgba(28,28,28,0.72) !important; }
+html[data-theme="light"] .text-white\/65        { color: rgba(28,28,28,0.67) !important; }
+html[data-theme="light"] .text-white\/60        { color: rgba(28,28,28,0.62) !important; }
+html[data-theme="light"] .text-white\/55        { color: rgba(28,28,28,0.57) !important; }
+html[data-theme="light"] .text-white\/50        { color: rgba(28,28,28,0.52) !important; }
+html[data-theme="light"] .text-white\/40        { color: rgba(28,28,28,0.42) !important; }
+html[data-theme="light"] .text-white\/30        { color: rgba(28,28,28,0.32) !important; }
+html[data-theme="light"] .text-white\/25        { color: rgba(28,28,28,0.27) !important; }
+html[data-theme="light"] .text-white\/20        { color: rgba(28,28,28,0.22) !important; }
+
+/* Kenarlıklar */
+html[data-theme="light"] .border-white\/10      { border-color: rgba(0,0,0,0.10) !important; }
+html[data-theme="light"] .border-white\/8       { border-color: rgba(0,0,0,0.08) !important; }
+html[data-theme="light"] .border-t.border-white\/10 { border-color: rgba(0,0,0,0.10) !important; }
+
+/* Glassmorphism kartlar — rgba beyaz → rgba siyah */
+html[data-theme="light"] .bg-white\/5           { background-color: rgba(0,0,0,0.04) !important; }
+html[data-theme="light"] .bg-white\/3           { background-color: rgba(0,0,0,0.02) !important; }
+html[data-theme="light"] .hover\:bg-white\/3:hover { background-color: rgba(0,0,0,0.03) !important; }
+
+/* Dropdown menü arka planı */
+html[data-theme="light"] [role="menu"] > div {
+  background: rgba(242,241,237,0.98) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+}
+
+/* Scrollbar */
+html[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #e8e7e3;
+}
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--green-700), var(--green-500));
+}
+
+/* Hero bölümü — arka plan görseli olduğu için metinler beyaz kalır */
+html[data-theme="light"] #hero .text-white     { color: #ffffff !important; }
+html[data-theme="light"] #hero .text-white\/70 { color: rgba(255,255,255,0.72) !important; }
+html[data-theme="light"] #hero .text-white\/60 { color: rgba(255,255,255,0.62) !important; }
+html[data-theme="light"] #hero .text-white\/50 { color: rgba(255,255,255,0.52) !important; }
+html[data-theme="light"] #hero .text-white\/40 { color: rgba(255,255,255,0.42) !important; }
+html[data-theme="light"] #hero .text-white\/30 { color: rgba(255,255,255,0.32) !important; }
+
+/* Geçiş animasyonu — bölümler arası yumuşak */
+html[data-theme="light"] section {
+  transition: background-color 0.4s ease;
+}
+
+/* Tema geçiş animasyonu */
+html {
+  transition: background-color 0.35s ease;
 }

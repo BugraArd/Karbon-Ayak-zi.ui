@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:localhost)",
+      "Bash(npx tsc *)",
+      "Bash(start *)",
+      "Bash(npm uninstall *)"
+    ]
+  }
+}

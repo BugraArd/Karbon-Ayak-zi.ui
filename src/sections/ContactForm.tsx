@@ -15,7 +15,6 @@ export function ContactForm() {
     name: '',
     email: '',
     phone: '',
-    visitDate: '',
     visitors: 'Genel Bilgi',
     message: ''
   });
@@ -46,24 +45,34 @@ export function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(contactFormConfig.formEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          visitDate: formData.visitDate,
-          visitors: formData.visitors,
-          message: formData.message,
-        }),
-      });
-
-      if (response.ok) {
+      if (contactFormConfig.formEndpoint.includes('YOUR_')) {
+        const subject = encodeURIComponent(`[Karbon Ayak İzi] ${formData.visitors} - ${formData.name}`);
+        const body = encodeURIComponent(
+          `Ad Soyad: ${formData.name}\nE-posta: ${formData.email}\nTelefon: ${formData.phone}\nKonu: ${formData.visitors}\n\nMesaj:\n${formData.message}`
+        );
+        const mailTo = contactFormConfig.contactInfo.find(i => i.icon === 'Mail')?.value ?? '';
+        window.location.href = `mailto:${mailTo}?subject=${subject}&body=${body}`;
         setStatus('success');
-        setFormData({ name: '', email: '', phone: '', visitDate: '', visitors: 'Genel Bilgi', message: '' });
+        setFormData({ name: '', email: '', phone: '', visitors: 'Genel Bilgi', message: '' });
       } else {
-        setStatus('error');
+        const response = await fetch(contactFormConfig.formEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            visitors: formData.visitors,
+            message: formData.message,
+          }),
+        });
+
+        if (response.ok) {
+          setStatus('success');
+          setFormData({ name: '', email: '', phone: '', visitors: 'Genel Bilgi', message: '' });
+        } else {
+          setStatus('error');
+        }
       }
     } catch {
       setStatus('error');
@@ -203,26 +212,6 @@ export function ContactForm() {
                       />
                     </div>
 
-                    {/* Phone */}
-                    <div>
-                      <label htmlFor="contact-phone" className="block text-xs text-white/50 uppercase tracking-widest mb-2">
-                        {form.phoneLabel}
-                      </label>
-                      <input
-                        id="contact-phone"
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder={form.phonePlaceholder}
-                        autoComplete="tel"
-                        className="w-full px-4 py-3 text-white placeholder-white/30 focus:outline-none transition-all duration-300 rounded-xl"
-                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}
-                        onFocus={e => { e.currentTarget.style.borderColor = 'rgba(16,185,129,0.5)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.05)'; }}
-                        onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.boxShadow = ''; }}
-                      />
-                    </div>
-
                     {/* Email */}
                     <div>
                       <label htmlFor="contact-email" className="block text-xs text-white/50 uppercase tracking-widest mb-2">
@@ -243,24 +232,26 @@ export function ContactForm() {
                         onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.boxShadow = ''; }}
                       />
                     </div>
+                  </div>
 
-                    {/* Visit Date */}
-                    <div>
-                      <label htmlFor="contact-date" className="block text-xs text-white/50 uppercase tracking-widest mb-2">
-                        {form.visitDateLabel}
-                      </label>
-                      <input
-                        id="contact-date"
-                        type="date"
-                        name="visitDate"
-                        value={formData.visitDate}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 text-white focus:outline-none transition-all duration-300 rounded-xl"
-                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', colorScheme: 'dark' }}
-                        onFocus={e => { e.currentTarget.style.borderColor = 'rgba(16,185,129,0.5)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.05)'; }}
-                        onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.boxShadow = ''; }}
-                      />
-                    </div>
+                  {/* Phone */}
+                  <div>
+                    <label htmlFor="contact-phone" className="block text-xs text-white/50 uppercase tracking-widest mb-2">
+                      {form.phoneLabel}
+                    </label>
+                    <input
+                      id="contact-phone"
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder={form.phonePlaceholder}
+                      autoComplete="tel"
+                      className="w-full px-4 py-3 text-white placeholder-white/30 focus:outline-none transition-all duration-300 rounded-xl"
+                      style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}
+                      onFocus={e => { e.currentTarget.style.borderColor = 'rgba(16,185,129,0.5)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.05)'; }}
+                      onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.boxShadow = ''; }}
+                    />
                   </div>
 
                   {/* Number of Visitors */}

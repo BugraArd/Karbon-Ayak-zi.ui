@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, Calculator, Home, BookOpen, Newspaper, Users, Mail, MapPin, Leaf } from 'lucide-react';
+import { Menu, X, ChevronDown, Calculator, Home, BookOpen, Newspaper, Users, Mail, MapPin, Leaf, Sun, Moon } from 'lucide-react';
 import { navigationConfig } from '../config';
 import { smoothScrollToSection } from '../lib/smoothScroll';
+import { useTheme } from '../lib/ThemeContext';
 
 // Icon lookup map for dynamic icon resolution from config strings
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -12,6 +13,7 @@ export function Navigation() {
   // Null check: if config is empty, render nothing
   if (!navigationConfig.brandName) return null;
 
+  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -65,11 +67,11 @@ export function Navigation() {
             : 'bg-transparent py-5'
         }`}
         style={isScrolled ? {
-          background: 'rgba(10, 22, 40, 0.92)',
+          background: theme === 'dark' ? 'rgba(10, 22, 40, 0.92)' : 'rgba(242, 241, 237, 0.95)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: '0 4px 30px rgba(0,0,0,0.4)',
+          borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.08)',
+          boxShadow: theme === 'dark' ? '0 4px 30px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.08)',
         } : {}}
         role="navigation"
         aria-label="Main navigation"
@@ -157,6 +159,22 @@ export function Navigation() {
             ))}
           </div>
 
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="hidden lg:flex w-9 h-9 items-center justify-center rounded-xl transition-all duration-300 hover:scale-110"
+            style={{
+              background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+              border: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
+            }}
+            aria-label={theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç'}
+          >
+            {theme === 'dark'
+              ? <Sun className="w-4 h-4 text-white/70" />
+              : <Moon className="w-4 h-4 text-gray-600" />
+            }
+          </button>
+
           {/* CTA Button */}
           {navigationConfig.ctaButtonText && (
             <button
@@ -190,7 +208,7 @@ export function Navigation() {
               ? 'opacity-100 visible'
               : 'opacity-0 invisible pointer-events-none'
           }`}
-          style={{ background: 'rgba(10,22,40,0.98)', backdropFilter: 'blur(24px)' }}
+          style={{ background: theme === 'dark' ? 'rgba(10,22,40,0.98)' : 'rgba(242,241,237,0.98)', backdropFilter: 'blur(24px)' }}
           role="menu"
           aria-hidden={!isMobileMenuOpen}
         >
@@ -251,6 +269,17 @@ export function Navigation() {
                 </div>
               );
             })}
+
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-3 w-full py-4 text-lg border-b border-white/8 transition-colors"
+              role="menuitem"
+            >
+              {theme === 'dark'
+                ? <><Sun className="w-5 h-5 text-green-500" /><span className="text-white hover:text-green-400">Açık Tema</span></>
+                : <><Moon className="w-5 h-5 text-green-500" /><span className="text-gray-800 hover:text-green-600">Koyu Tema</span></>
+              }
+            </button>
 
             {navigationConfig.ctaButtonText && (
               <button

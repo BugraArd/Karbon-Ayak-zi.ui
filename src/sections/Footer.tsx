@@ -24,19 +24,26 @@ export function Footer() {
     if (!newsletterEmail) return;
 
     try {
-      const response = await fetch(footerConfig.newsletterEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: newsletterEmail,
-        }),
-      });
-
-      if (response.ok) {
+      if (footerConfig.newsletterEndpoint.includes('YOUR_')) {
+        const subject = encodeURIComponent('Bülten Aboneliği');
+        const body = encodeURIComponent(`Bülten aboneliği için e-posta: ${newsletterEmail}`);
+        const mailTo = footerConfig.contactItems.find(i => i.icon === 'Mail')?.text ?? '';
+        window.location.href = `mailto:${mailTo}?subject=${subject}&body=${body}`;
         setNewsletterStatus('success');
         setNewsletterEmail('');
       } else {
-        setNewsletterStatus('error');
+        const response = await fetch(footerConfig.newsletterEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: newsletterEmail }),
+        });
+
+        if (response.ok) {
+          setNewsletterStatus('success');
+          setNewsletterEmail('');
+        } else {
+          setNewsletterStatus('error');
+        }
       }
     } catch {
       setNewsletterStatus('error');
@@ -196,15 +203,14 @@ export function Footer() {
             {footerConfig.legalLinks.map((link, index) => (
               <span key={index}>
                 <span className="hidden md:inline">|</span>
-                <button className="hover:text-green-400 transition-colors ml-2 md:ml-0">{link}</button>
+                <button
+                  onClick={() => smoothScrollToSection('#contact')}
+                  className="hover:text-green-400 transition-colors ml-2 md:ml-0"
+                >
+                  {link}
+                </button>
               </span>
             ))}
-            {footerConfig.icpText && (
-              <>
-                <span className="hidden md:inline">|</span>
-                <span>{footerConfig.icpText}</span>
-              </>
-            )}
           </div>
 
           {/* Back to Top */}

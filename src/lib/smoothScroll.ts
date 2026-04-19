@@ -47,7 +47,7 @@ export function smoothScrollToY(targetY: number, duration = DURATION): void {
  * @param duration - Animation duration in ms (default: 900)
  */
 export function smoothScrollToSection(selector: string, duration = DURATION): void {
-  if (selector === '#natural-gas' || selector === '#electricity') {
+  if (selector === '#natural-gas' || selector === '#electricity' || selector === '#vehicle') {
     window.dispatchEvent(new CustomEvent('changeCalculator', { detail: selector }));
     selector = '#calculators';
   }

@@ -61,10 +61,28 @@ export const navigationConfig: NavigationConfig = {
       dropdown: [
         { name: "Doğalgaz Hesaplayıcı", href: "#natural-gas" },
         { name: "Elektrik Tüketim Hesaplayıcı", href: "#electricity" },
+        { name: "Araç Karbon Hesaplayıcı", href: "#vehicle" },
       ]
     },
-    { name: "İller", href: "#cities", icon: "MapPin" },
-    { name: "Bilgi", href: "#info", icon: "BookOpen" },
+    {
+      name: "İller",
+      href: "#cities",
+      icon: "MapPin",
+      dropdown: [
+        { name: "İl Verileri", href: "#cities" },
+        { name: "İl Karşılaştırması", href: "#city-compare" },
+      ]
+    },
+    {
+      name: "Bilgi Merkezi",
+      href: "#info",
+      icon: "BookOpen",
+      dropdown: [
+        { name: "Bilgi", href: "#info" },
+        { name: "Haber Çizelgesi", href: "#news-timeline" },
+        { name: "Pratik Çözümler", href: "#tips" },
+      ]
+    },
     { name: "İletişim", href: "#contact", icon: "Mail" },
   ],
   ctaButtonText: "Hemen Başla",
@@ -126,14 +144,8 @@ export interface Calculator {
   name: string;
   subtitle: string;
   year: string;
-  image: string;
-  filter: string;
-  glowColor: string;
   description: string;
   tastingNotes: string;
-  alcohol: string;
-  temperature: string;
-  aging: string;
 }
 
 export interface CalculatorFeature {
@@ -167,28 +179,24 @@ export const calculatorShowcaseConfig: CalculatorShowcaseConfig = {
       name: "Doğalgaz Hesaplayıcı",
       subtitle: "Türkiye 81 İl",
       year: "2026",
-      image: "/images/natural-gas.jpg",
-      filter: "",
-      glowColor: "bg-orange-500/20",
-      description: "Türkiye'nin 81 ilindeki doğalgaz tüketim verilerine göre karbon salınımınızı hesaplayın. Her ilin farklı iklim koşulları ve tüketim alışkanlıkları dikkate alınır.",
-      tastingNotes: "m³ başına 2.02 kg CO₂",
-      alcohol: "Ort. Fatura",
-      temperature: "Isınma Derecesi",
-      aging: "Yıllık Tüketim",
+      description: "Faturanızda yazan m³ değerini girin, doğalgazın atmosfere bıraktığı CO₂ miktarını anında görün. Türkiye'nin 81 ili için geçerli BOTAŞ emisyon katsayısı kullanılır.",
+      tastingNotes: "Her 1 m³ doğalgaz yandığında yaklaşık 1.942 kg CO₂ açığa çıkar.",
     },
     {
       id: "electricity",
       name: "Elektrik Tüketim Hesaplayıcı",
       subtitle: "Ev ve bireysel elektrik kullanımı",
       year: "2026",
-      image: "",
-      filter: "",
-      glowColor: "bg-blue-500/20",
-      description: "Aylık veya günlük elektrik tüketiminizi girerek tahmini karbon ayak izinizi hesaplayın. Türkiye ortalama şebeke emisyon faktörüne göre sonuç üretin.",
-      tastingNotes: "kWh başına kg CO₂e",
-      alcohol: "Tüketim Tipi",
-      temperature: "kWh Değeri",
-      aging: "Sonuç Periyodu",
+      description: "Faturanızdaki kWh değerini ya da günlük tahmini tüketiminizi girin. Türkiye elektrik şebekesinin güncel karbon yoğunluğuna göre ayak izinizi hesaplayın.",
+      tastingNotes: "Türkiye şebekesinde 1 kWh elektrik üretimi için ortalama 0.469 kg CO₂ salınır. (TEİAŞ, 2022)",
+    },
+    {
+      id: "vehicle",
+      name: "Araç Karbon Hesaplayıcı",
+      subtitle: "WLTP · Tailpipe Emisyon",
+      year: "2026",
+      description: "Marka, model ve versiyon bilgilerinizi seçin. Yolculuk mesafenizi girerek aracınızın egzozunun ne kadar CO₂ ürettiğini öğrenin. Toyota ve Honda modelleri desteklenmektedir.",
+      tastingNotes: "Tüm değerler resmi WLTP test dökümanlarından alınmıştır; yaşam döngüsü emisyonları dahil değildir.",
     },
   ],
   features: [
@@ -282,6 +290,101 @@ export const citiesCarouselConfig: CitiesCarouselConfig = {
 };
 
 // -----------------------------------------------------------------------------
+// 81 İl Karbon Verisi
+// Kaynak: TÜİK enerji istatistikleri + EPDK bölgesel doğalgaz tüketim verileri
+// Değerler: kg CO₂/kişi/yıl (ısınma + konut enerji tüketimi)
+// -----------------------------------------------------------------------------
+export interface CityData {
+  name: string;
+  region: string;
+  co2PerPerson: number;
+}
+
+export const allCitiesData: CityData[] = [
+  { name: "Adana",          region: "Akdeniz",             co2PerPerson: 1150 },
+  { name: "Adıyaman",       region: "Güneydoğu Anadolu",   co2PerPerson: 1700 },
+  { name: "Afyonkarahisar", region: "Ege",                 co2PerPerson: 2400 },
+  { name: "Ağrı",           region: "Doğu Anadolu",        co2PerPerson: 3400 },
+  { name: "Aksaray",        region: "İç Anadolu",          co2PerPerson: 2400 },
+  { name: "Amasya",         region: "Karadeniz",           co2PerPerson: 2200 },
+  { name: "Ankara",         region: "İç Anadolu",          co2PerPerson: 2420 },
+  { name: "Antalya",        region: "Akdeniz",             co2PerPerson: 1200 },
+  { name: "Ardahan",        region: "Doğu Anadolu",        co2PerPerson: 3800 },
+  { name: "Artvin",         region: "Karadeniz",           co2PerPerson: 2200 },
+  { name: "Aydın",          region: "Ege",                 co2PerPerson: 1400 },
+  { name: "Balıkesir",      region: "Marmara",             co2PerPerson: 1900 },
+  { name: "Bartın",         region: "Karadeniz",           co2PerPerson: 2300 },
+  { name: "Batman",         region: "Güneydoğu Anadolu",   co2PerPerson: 2100 },
+  { name: "Bayburt",        region: "Karadeniz",           co2PerPerson: 3200 },
+  { name: "Bilecik",        region: "Marmara",             co2PerPerson: 2300 },
+  { name: "Bingöl",         region: "Doğu Anadolu",        co2PerPerson: 3000 },
+  { name: "Bitlis",         region: "Doğu Anadolu",        co2PerPerson: 3100 },
+  { name: "Bolu",           region: "Marmara",             co2PerPerson: 2600 },
+  { name: "Burdur",         region: "Akdeniz",             co2PerPerson: 1900 },
+  { name: "Bursa",          region: "Marmara",             co2PerPerson: 2100 },
+  { name: "Çanakkale",      region: "Marmara",             co2PerPerson: 1700 },
+  { name: "Çankırı",        region: "İç Anadolu",          co2PerPerson: 2700 },
+  { name: "Çorum",          region: "İç Anadolu",          co2PerPerson: 2400 },
+  { name: "Denizli",        region: "Ege",                 co2PerPerson: 1800 },
+  { name: "Diyarbakır",     region: "Güneydoğu Anadolu",   co2PerPerson: 2200 },
+  { name: "Düzce",          region: "Marmara",             co2PerPerson: 2300 },
+  { name: "Edirne",         region: "Marmara",             co2PerPerson: 2000 },
+  { name: "Elazığ",         region: "Doğu Anadolu",        co2PerPerson: 2600 },
+  { name: "Erzincan",       region: "Doğu Anadolu",        co2PerPerson: 3000 },
+  { name: "Erzurum",        region: "Doğu Anadolu",        co2PerPerson: 3150 },
+  { name: "Eskişehir",      region: "İç Anadolu",          co2PerPerson: 2500 },
+  { name: "Gaziantep",      region: "Güneydoğu Anadolu",   co2PerPerson: 1900 },
+  { name: "Giresun",        region: "Karadeniz",           co2PerPerson: 1900 },
+  { name: "Gümüşhane",      region: "Karadeniz",           co2PerPerson: 2800 },
+  { name: "Hakkari",        region: "Doğu Anadolu",        co2PerPerson: 3300 },
+  { name: "Hatay",          region: "Akdeniz",             co2PerPerson: 1300 },
+  { name: "Iğdır",          region: "Doğu Anadolu",        co2PerPerson: 2900 },
+  { name: "Isparta",        region: "Akdeniz",             co2PerPerson: 2100 },
+  { name: "İstanbul",       region: "Marmara",             co2PerPerson: 1850 },
+  { name: "İzmir",          region: "Ege",                 co2PerPerson: 1520 },
+  { name: "Kahramanmaraş",  region: "Akdeniz",             co2PerPerson: 2000 },
+  { name: "Karabük",        region: "Karadeniz",           co2PerPerson: 2500 },
+  { name: "Karaman",        region: "İç Anadolu",          co2PerPerson: 2300 },
+  { name: "Kars",           region: "Doğu Anadolu",        co2PerPerson: 3600 },
+  { name: "Kastamonu",      region: "Karadeniz",           co2PerPerson: 2600 },
+  { name: "Kayseri",        region: "İç Anadolu",          co2PerPerson: 2700 },
+  { name: "Kilis",          region: "Güneydoğu Anadolu",   co2PerPerson: 1600 },
+  { name: "Kırıkkale",      region: "İç Anadolu",          co2PerPerson: 2400 },
+  { name: "Kırklareli",     region: "Marmara",             co2PerPerson: 2100 },
+  { name: "Kırşehir",       region: "İç Anadolu",          co2PerPerson: 2600 },
+  { name: "Kocaeli",        region: "Marmara",             co2PerPerson: 2000 },
+  { name: "Konya",          region: "İç Anadolu",          co2PerPerson: 2600 },
+  { name: "Kütahya",        region: "Ege",                 co2PerPerson: 2600 },
+  { name: "Malatya",        region: "Doğu Anadolu",        co2PerPerson: 2500 },
+  { name: "Manisa",         region: "Ege",                 co2PerPerson: 1700 },
+  { name: "Mardin",         region: "Güneydoğu Anadolu",   co2PerPerson: 1800 },
+  { name: "Mersin",         region: "Akdeniz",             co2PerPerson: 1100 },
+  { name: "Muğla",          region: "Ege",                 co2PerPerson: 1300 },
+  { name: "Muş",            region: "Doğu Anadolu",        co2PerPerson: 3200 },
+  { name: "Nevşehir",       region: "İç Anadolu",          co2PerPerson: 2500 },
+  { name: "Niğde",          region: "İç Anadolu",          co2PerPerson: 2500 },
+  { name: "Ordu",           region: "Karadeniz",           co2PerPerson: 1850 },
+  { name: "Osmaniye",       region: "Akdeniz",             co2PerPerson: 1400 },
+  { name: "Rize",           region: "Karadeniz",           co2PerPerson: 1700 },
+  { name: "Sakarya",        region: "Marmara",             co2PerPerson: 2200 },
+  { name: "Samsun",         region: "Karadeniz",           co2PerPerson: 1950 },
+  { name: "Siirt",          region: "Güneydoğu Anadolu",   co2PerPerson: 2400 },
+  { name: "Sinop",          region: "Karadeniz",           co2PerPerson: 2100 },
+  { name: "Sivas",          region: "İç Anadolu",          co2PerPerson: 3000 },
+  { name: "Şanlıurfa",      region: "Güneydoğu Anadolu",   co2PerPerson: 1500 },
+  { name: "Şırnak",         region: "Güneydoğu Anadolu",   co2PerPerson: 2600 },
+  { name: "Tekirdağ",       region: "Marmara",             co2PerPerson: 1900 },
+  { name: "Tokat",          region: "Karadeniz",           co2PerPerson: 2300 },
+  { name: "Trabzon",        region: "Karadeniz",           co2PerPerson: 1800 },
+  { name: "Tunceli",        region: "Doğu Anadolu",        co2PerPerson: 2900 },
+  { name: "Uşak",           region: "Ege",                 co2PerPerson: 2000 },
+  { name: "Van",            region: "Doğu Anadolu",        co2PerPerson: 3050 },
+  { name: "Yalova",         region: "Marmara",             co2PerPerson: 1900 },
+  { name: "Yozgat",         region: "İç Anadolu",          co2PerPerson: 2800 },
+  { name: "Zonguldak",      region: "Karadeniz",           co2PerPerson: 2200 },
+];
+
+// -----------------------------------------------------------------------------
 // Info/Education Config (Museum yerine)
 // -----------------------------------------------------------------------------
 export interface TimelineEvent {
@@ -324,14 +427,12 @@ export interface InfoConfig {
   yearBadge: string;
   yearBadgeLabel: string;
   quote: InfoQuote;
-  founderPhotoAlt: string;
-  founderPhoto: string;
 }
 
 export const infoConfig: InfoConfig = {
   scriptText: "Bilgi Merkezi",
   subtitle: "KARBON AYAK İZİ HAKKINDA",
-  mainTitle: "Bilgi ve Eğitim",
+  mainTitle: "Bilgi",
   introText: "Karbon ayak izi, bireylerin, kuruluşların ve ürünlerin faaliyetleri sonucu atmosfere saldığı sera gazı miktarının bir ölçüsüdür. Bu miktar genellikle karbondioksit (CO₂) eşdeğeri olarak ifade edilir.",
   timeline: [
     { 
@@ -410,8 +511,6 @@ export const infoConfig: InfoConfig = {
     text: "Gelecek nesillere yaşanabilir bir dünya bırakmak için bugünden harekete geçmeliyiz.",
     attribution: "Sürdürülebilirlik Manifestosu",
   },
-  founderPhotoAlt: "Sürdürülebilir Gelecek",
-  founderPhoto: "/images/sustainable-future.jpg",
 };
 
 // -----------------------------------------------------------------------------
@@ -449,7 +548,6 @@ export interface TipsConfig {
   scriptText: string;
   subtitle: string;
   mainTitle: string;
-  viewAllText: string;
   readMoreText: string;
   articles: TipArticle[];
   testimonialsScriptText: string;
@@ -470,7 +568,6 @@ export const tipsConfig: TipsConfig = {
   scriptText: "İpuçları",
   subtitle: "KARBON AZALTMA REHBERİ",
   mainTitle: "Pratik Çözümler",
-  viewAllText: "Tümünü Gör",
   readMoreText: "Devamını Oku",
   articles: [
     {
@@ -601,7 +698,6 @@ export interface ContactFormFields {
   emailPlaceholder: string;
   phoneLabel: string;
   phonePlaceholder: string;
-  visitDateLabel: string;
   visitorsLabel: string;
   visitorsOptions: string[];
   messageLabel: string;
@@ -657,7 +753,6 @@ export const contactFormConfig: ContactFormConfig = {
     emailPlaceholder: "ornek@email.com",
     phoneLabel: "Telefon Numaranız",
     phonePlaceholder: "+90 5XX XXX XX XX",
-    visitDateLabel: "Tercih Ettiğiniz Tarih",
     visitorsLabel: "Konu",
     visitorsOptions: ["Genel Bilgi", "Doğalgaz Hesaplama", "Ulaşım Hesaplama", "İş Birliği", "Diğer"],
     messageLabel: "Mesajınız",
@@ -710,9 +805,7 @@ export interface FooterConfig {
   newsletterEndpoint: string;
   copyrightText: string;
   legalLinks: string[];
-  icpText: string;
   backToTopText: string;
-  ageVerificationText: string;
 }
 
 export const footerConfig: FooterConfig = {
@@ -752,9 +845,7 @@ export const footerConfig: FooterConfig = {
   newsletterEndpoint: "https://formspree.io/f/YOUR_NEWSLETTER_ID",
   copyrightText: "© 2026 Karbon Ayak İzi Takip. Tüm hakları saklıdır.",
   legalLinks: ["Gizlilik Politikası", "Kullanım Koşulları", "Çerez Politikası"],
-  icpText: "Türkiye Cumhuriyeti Çevre, Şehircilik ve İklim Değişikliği Bakanlığı",
   backToTopText: "Yukarı Çık",
-  ageVerificationText: "",
 };
 
 // -----------------------------------------------------------------------------

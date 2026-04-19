@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { ArrowRight, Calendar, Star, Quote, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { tipsConfig } from '../config';
 import type { TipArticle } from '../config';
+import { useTheme } from '../lib/ThemeContext';
 
 // ─── Article Modal ─────────────────────────────────────────────────────────────
 function ArticleModal({
@@ -15,6 +16,8 @@ function ArticleModal({
   onClose: () => void;
   onNavigate: (article: TipArticle) => void;
 }) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   const currentIndex = allArticles.findIndex((a) => a.id === article.id);
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < allArticles.length - 1;
@@ -45,7 +48,7 @@ function ArticleModal({
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8"
-      style={{ background: 'rgba(10,22,40,0.92)', backdropFilter: 'blur(16px)' }}
+      style={{ background: isLight ? 'rgba(220,218,213,0.92)' : 'rgba(10,22,40,0.92)', backdropFilter: 'blur(16px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       role="dialog"
       aria-modal="true"
@@ -55,15 +58,15 @@ function ArticleModal({
       <div
         className="relative w-full max-w-3xl max-h-[90vh] flex flex-col rounded-2xl overflow-hidden animate-modal-in"
         style={{
-          background: 'linear-gradient(160deg, #0f1d32 0%, #0a1628 100%)',
+          background: isLight ? 'linear-gradient(160deg, #f5f4f0 0%, #eeecea 100%)' : 'linear-gradient(160deg, #0f1d32 0%, #0a1628 100%)',
           border: '1px solid rgba(16,185,129,0.2)',
-          boxShadow: '0 25px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(16,185,129,0.08)',
+          boxShadow: isLight ? '0 25px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(16,185,129,0.1)' : '0 25px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(16,185,129,0.08)',
         }}
       >
         {/* Hero Image */}
         <div className="relative h-52 md:h-64 flex-shrink-0 overflow-hidden">
           <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0f1d32] via-[#0f1d32]/40 to-transparent" />
+          <div className="absolute inset-0" style={{ background: isLight ? 'linear-gradient(to top, #f5f4f0, rgba(245,244,240,0.3), transparent)' : 'linear-gradient(to top, #0f1d32, rgba(15,29,50,0.4), transparent)' }} />
 
           {/* Category badge */}
           <div className="absolute top-5 left-5">
@@ -102,10 +105,10 @@ function ArticleModal({
               const [intro, ...items] = paragraph.split('\n');
               return (
                 <div key={i}>
-                  {intro && <p className="text-white/80 leading-relaxed text-[15px] mb-3">{intro}</p>}
+                  {intro && <p className="leading-relaxed text-[15px] mb-3" style={{ color: isLight ? 'rgba(28,28,28,0.8)' : 'rgba(255,255,255,0.8)' }}>{intro}</p>}
                   <ul className="space-y-2">
                     {items.map((item, j) => (
-                      <li key={j} className="flex items-start gap-3 text-white/70 text-[15px] leading-relaxed">
+                      <li key={j} className="flex items-start gap-3 text-[15px] leading-relaxed" style={{ color: isLight ? 'rgba(28,28,28,0.7)' : 'rgba(255,255,255,0.7)' }}>
                         <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
                         <span>{item.replace('• ', '')}</span>
                       </li>
@@ -114,7 +117,7 @@ function ArticleModal({
                 </div>
               );
             }
-            return <p key={i} className="text-white/80 leading-relaxed text-[15px]">{paragraph}</p>;
+            return <p key={i} className="leading-relaxed text-[15px]" style={{ color: isLight ? 'rgba(28,28,28,0.8)' : 'rgba(255,255,255,0.8)' }}>{paragraph}</p>;
           })}
           <div className="h-4" />
         </div>
@@ -122,7 +125,7 @@ function ArticleModal({
         {/* Footer: navigation */}
         <div
           className="flex-shrink-0 flex items-center justify-between px-6 md:px-8 py-4"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(0,0,0,0.2)' }}
+          style={{ borderTop: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.07)', background: isLight ? 'rgba(0,0,0,0.04)' : 'rgba(0,0,0,0.2)' }}
         >
           <button
             onClick={() => hasPrev && onNavigate(allArticles[currentIndex - 1])}
@@ -134,7 +137,7 @@ function ArticleModal({
             Önceki
           </button>
 
-          <span className="text-white/30 text-xs tabular-nums">
+          <span className="text-xs tabular-nums" style={{ color: isLight ? 'rgba(28,28,28,0.35)' : 'rgba(255,255,255,0.3)' }}>
             {currentIndex + 1} / {allArticles.length}
           </span>
 
