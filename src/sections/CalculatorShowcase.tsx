@@ -28,20 +28,9 @@ function NaturalGasCalculator() {
     if (value === '' || /^\d*[.,]?\d*$/.test(value)) {
       setInputValue(value);
       setError('');
-      
-      // Otomatik hesaplama
-      const numValue = parseFloat(value.replace(',', '.'));
-      if (value && !isNaN(numValue) && numValue > 0) {
-        const kg = numValue * EMISSION_FACTOR_KG_PER_M3;
-        const ton = kg / 1000;
-        setEmissionKg(kg);
-        setEmissionTon(ton);
-        setIsCalculated(true);
-      } else {
-        setEmissionKg(null);
-        setEmissionTon(null);
-        setIsCalculated(false);
-      }
+      setIsCalculated(false);
+      setEmissionKg(null);
+      setEmissionTon(null);
     }
   };
 
@@ -275,16 +264,9 @@ function ElectricityCalculator() {
     if (value === '' || /^\d*[.,]?\d*$/.test(value)) {
       setInputValue(value);
       setError('');
-      
-      const numValue = parseFloat(value.replace(',', '.'));
-      if (value && !isNaN(numValue) && numValue > 0) {
-        calculateEmissions(numValue, period);
-        setIsCalculated(true);
-      } else {
-        setEmissionKg(null);
-        setYearlyEstimate(null);
-        setIsCalculated(false);
-      }
+      setIsCalculated(false);
+      setEmissionKg(null);
+      setYearlyEstimate(null);
     }
   };
 
