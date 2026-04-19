@@ -82,7 +82,7 @@ function ArticleModal({
           <button
             onClick={onClose}
             className="absolute top-5 right-5 w-9 h-9 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
-            style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}
+            style={{ background: isLight ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)', border: isLight ? '1px solid rgba(0,0,0,0.15)' : '1px solid rgba(255,255,255,0.1)' }}
             aria-label="Kapat"
           >
             <X className="w-4 h-4" />
@@ -161,6 +161,8 @@ export function TipsSection() {
   // *** ALL hooks MUST be called before any early return ***
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeArticle, setActiveArticle] = useState<TipArticle | null>(null);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
   const handleOpenArticle = useCallback((article: TipArticle) => {
     setActiveArticle(article);
@@ -307,7 +309,7 @@ export function TipsSection() {
                   <div
                     key={t.name}
                     className="scale-in p-8 rounded-2xl relative overflow-hidden transition-all duration-300 hover:scale-[1.02]"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', transitionDelay: `${0.1 + index * 0.1}s` }}
+                    style={{ background: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)', border: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.08)', transitionDelay: `${0.1 + index * 0.1}s` }}
                   >
                     <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl pointer-events-none" style={{ background: 'rgba(16,185,129,0.06)' }} />
                     <Quote className="w-8 h-8 absolute top-6 right-6" style={{ color: 'rgba(16,185,129,0.2)' }} />

@@ -399,22 +399,24 @@ function ElectricityCalculator() {
           {/* Calculate Button */}
           <button
             onClick={handleCalculate}
-            className="w-full py-3.5 rounded-xl text-white font-medium text-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center"
+            className="w-full py-3.5 rounded-xl text-white font-medium text-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             style={{
               background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
               boxShadow: '0 4px 20px rgba(59,130,246,0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
             }}
           >
-            <span className="inline-flex items-center gap-2">
-              <Calculator className="w-4 h-4" />
-              Emisyonu Hesapla
-            </span>
+            <Calculator className="w-4 h-4 flex-shrink-0" />
+            Emisyonu Hesapla
           </button>
 
           {/* Results */}
           <div
             className={`overflow-hidden transition-all duration-500 ease-out ${
-              isCalculated ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'
+              isCalculated ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
             <div
@@ -767,6 +769,91 @@ const VEHICLE_DATA: Record<string, Record<string, Record<string, Record<string, 
       },
       "2023–2025": {
         "Güncellenmiş motorlar": 290,
+      },
+    },
+  },
+  Renault: {
+    Clio: {
+      "2020–2022": {
+        "1.0 SCe Benzin": 122,
+        "1.0 TCe Benzin": 125,
+        "1.5 Blue dCi Diesel": 100,
+        "E-Tech Hybrid": 100,
+      },
+      "2023–2025": {
+        "Hybrid": 97,
+        "Benzin": 123,
+      },
+    },
+  },
+  Peugeot: {
+    "208": {
+      "2020–2022": {
+        "1.2 PureTech Benzin": 125,
+        "1.5 BlueHDi Diesel": 105,
+      },
+      "2023–2025": {
+        "Hybrid 48V": 110,
+        "Benzin": 122,
+      },
+    },
+  },
+  Skoda: {
+    Octavia: {
+      "2020–2022": {
+        "1.0 TSI": 118,
+        "1.5 TSI": 125,
+        "2.0 TDI": 117,
+        "iV Plug-in Hybrid (PHEV)": 27,
+      },
+      "2023–2025": {
+        "1.5 eTSI": 122,
+        "Diesel": 114,
+        "PHEV": 24,
+      },
+    },
+  },
+  Dacia: {
+    Duster: {
+      "2020–2022": {
+        "1.3 TCe Benzin": 150,
+        "1.5 dCi Diesel": 127,
+        "LPG": 135,
+      },
+      "2023–2025": {
+        "Hybrid 140": 118,
+        "Benzin": 145,
+      },
+    },
+  },
+  Nissan: {
+    Qashqai: {
+      "2020–2022": {
+        "1.3 DIG-T Benzin": 137,
+      },
+      "2023–2025": {
+        "Mild Hybrid": 137,
+        "e-POWER Hybrid": 117,
+      },
+    },
+  },
+  Tesla: {
+    "Model 3": {
+      "2020–2025": {
+        "Tailpipe (sıfır egzoz)": 0,
+        "Gerçek kullanım tahmini (Avrupa)": 85,
+      },
+    },
+  },
+  Fiat: {
+    Egea: {
+      "2020–2022": {
+        "1.4 Fire Benzin": 147,
+        "1.6 Multijet Diesel": 120,
+      },
+      "2023–2025": {
+        "1.0 Hybrid": 120,
+        "Diesel": 115,
       },
     },
   },
@@ -1198,7 +1285,7 @@ export function CalculatorShowcase() {
                 { label: '81 İl', value: 'Veri Kapsamı' },
               ] : isVehicleActive ? [
                 { label: 'WLTP', value: 'Test Standardı' },
-                { label: '2 Marka', value: 'Model Seçimi' },
+                { label: '16 Marka', value: 'Model Seçimi' },
                 { label: '21 kg', value: '1 Ağaç/Yıl' },
               ] : [
                 { label: '0.469 kg', value: 'CO₂e/kWh Faktörü' },

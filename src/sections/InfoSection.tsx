@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { History, Award, BookOpen } from 'lucide-react';
 import { infoConfig } from '../config';
+import { useTheme } from '../lib/ThemeContext';
 import { smoothScrollToSection } from '../lib/smoothScroll';
 
 // Icon lookup map for dynamic icon resolution from config strings
@@ -13,8 +14,10 @@ export function InfoSection() {
   if (!infoConfig.mainTitle) return null;
 
   const [activeTab, setActiveTab] = useState(infoConfig.tabs[0]?.id || '');
-  const [activeTimelineIdx, setActiveTimelineIdx] = useState(0); // Track active timeline item
+  const [activeTimelineIdx, setActiveTimelineIdx] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -112,9 +115,9 @@ export function InfoSection() {
                 <div
                   className="p-6 rounded-xl transition-all duration-500"
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    borderLeft: '2px solid rgba(16,185,129,0.4)',
+                    background: isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.03)',
+                    border: isLight ? '1px solid rgba(0,0,0,0.10)' : '1px solid rgba(255,255,255,0.08)',
+                    borderLeft: '3px solid rgba(16,185,129,0.5)',
                   }}
                 >
                   <h3 className="font-serif text-h5 text-white mb-4">
@@ -206,7 +209,7 @@ export function InfoSection() {
 
         {/* Timeline Dynamic Section */}
         {infoConfig.timeline.length > 0 && (
-          <div id="news-timeline" className="fade-up pt-12" style={{ transitionDelay: '0.25s', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+          <div id="news-timeline" className="fade-up pt-12" style={{ transitionDelay: '0.25s', borderTop: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.05)' }}>
             <h4 className="text-xs text-white/40 uppercase tracking-widest mb-12 text-center">Haber Çizelgesi</h4>
             
             {/* Timeline Bar */}
@@ -225,7 +228,7 @@ export function InfoSection() {
                       <div
                         className={`w-4 h-4 rounded-full z-10 transition-all duration-300 ${isActive ? 'scale-125' : 'group-hover:scale-110'}`}
                         style={{
-                          background: isActive ? '#10b981' : 'var(--gray-900)',
+                          background: isActive ? '#10b981' : isLight ? '#d1d5db' : '#1e3a52',
                           border: '2px solid #10b981',
                           boxShadow: isActive ? '0 0 16px rgba(16,185,129,0.8)' : 'none',
                         }}
@@ -249,9 +252,9 @@ export function InfoSection() {
                 <div 
                   className="aspect-square rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300"
                   style={{
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(16,185,129,0.15)',
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.2), inset 0 0 20px rgba(16,185,129,0.05)',
+                    background: isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.02)',
+                    border: isLight ? '1px solid rgba(16,185,129,0.25)' : '1px solid rgba(16,185,129,0.15)',
+                    boxShadow: isLight ? '0 10px 30px rgba(0,0,0,0.08)' : '0 10px 30px rgba(0,0,0,0.2), inset 0 0 20px rgba(16,185,129,0.05)',
                   }}
                 >
                   <img 
@@ -265,9 +268,9 @@ export function InfoSection() {
                 <div 
                   className="rounded-2xl p-6 md:p-8 flex flex-col justify-center min-h-[160px] transition-all duration-300"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02))',
-                    border: '1px solid rgba(16,185,129,0.15)',
-                    borderLeft: '4px solid rgba(16,185,129,0.6)'
+                    background: isLight ? 'linear-gradient(135deg, rgba(16,185,129,0.07), rgba(16,185,129,0.02))' : 'linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02))',
+                    border: isLight ? '1px solid rgba(16,185,129,0.25)' : '1px solid rgba(16,185,129,0.15)',
+                    borderLeft: '4px solid rgba(16,185,129,0.6)',
                   }}
                 >
                   <h3 className="font-serif text-2xl text-white mb-4">

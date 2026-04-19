@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Leaf, MapPin, Phone, Mail, Linkedin, ArrowUp, CheckCircle } from 'lucide-react';
 import { footerConfig } from '../config';
 import { smoothScrollToSection, smoothScrollToY } from '../lib/smoothScroll';
+import { useTheme } from '../lib/ThemeContext';
 
 // Icon lookup map for dynamic icon resolution from config strings
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -14,6 +15,8 @@ export function Footer() {
 
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
   const scrollToTop = () => smoothScrollToY(0);
 
@@ -90,15 +93,15 @@ export function Footer() {
                         href={social.href}
                         aria-label={social.label}
                         className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:-translate-y-0.5"
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+                        style={{ background: isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.05)', border: isLight ? '1px solid rgba(0,0,0,0.10)' : '1px solid rgba(255,255,255,0.08)' }}
                         onMouseEnter={e => {
                           (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, #10b981, #059669)';
                           (e.currentTarget as HTMLElement).style.border = '1px solid rgba(16,185,129,0.5)';
                           (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 15px rgba(16,185,129,0.3)';
                         }}
                         onMouseLeave={e => {
-                          (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)';
-                          (e.currentTarget as HTMLElement).style.border = '1px solid rgba(255,255,255,0.08)';
+                          (e.currentTarget as HTMLElement).style.background = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.05)';
+                          (e.currentTarget as HTMLElement).style.border = isLight ? '1px solid rgba(0,0,0,0.10)' : '1px solid rgba(255,255,255,0.08)';
                           (e.currentTarget as HTMLElement).style.boxShadow = '';
                         }}
                       >
@@ -171,9 +174,9 @@ export function Footer() {
                       required
                       autoComplete="email"
                       className="flex-1 px-3 py-2.5 text-white text-sm placeholder-white/30 focus:outline-none transition-colors rounded-lg"
-                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+                      style={{ background: isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)', border: isLight ? '1px solid rgba(0,0,0,0.12)' : '1px solid rgba(255,255,255,0.1)' }}
                       onFocus={e => (e.currentTarget.style.borderColor = 'rgba(16,185,129,0.5)')}
-                      onBlur={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}
+                      onBlur={e => (e.currentTarget.style.borderColor = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)')}
                     />
                     <button
                       type="submit"

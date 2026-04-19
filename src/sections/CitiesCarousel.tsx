@@ -14,6 +14,8 @@ export function CitiesCarousel() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -126,20 +128,20 @@ export function CitiesCarousel() {
                 <button
                   onClick={prevSlide}
                   className="w-11 h-11 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                  style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}
+                  style={{ background: isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', border: isLight ? '1px solid rgba(0,0,0,0.15)' : '1px solid rgba(255,255,255,0.15)' }}
                   aria-label="Previous slide"
                   onMouseEnter={e => (e.currentTarget.style.background = 'rgba(16,185,129,0.85)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)')}
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={nextSlide}
                   className="w-11 h-11 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                  style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}
+                  style={{ background: isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', border: isLight ? '1px solid rgba(0,0,0,0.15)' : '1px solid rgba(255,255,255,0.15)' }}
                   aria-label="Next slide"
                   onMouseEnter={e => (e.currentTarget.style.background = 'rgba(16,185,129,0.85)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)')}
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -166,9 +168,9 @@ export function CitiesCarousel() {
             <div
               className="p-8 lg:p-12 flex flex-col justify-center relative overflow-hidden lg:rounded-r-2xl"
               style={{
-                background: 'rgba(255,255,255,0.04)',
+                background: isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.04)',
                 backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                border: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.08)',
                 borderLeft: 'none',
               }}
             >

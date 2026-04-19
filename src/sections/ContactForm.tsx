@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, CheckCircle, AlertCircle, MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { contactFormConfig } from '../config';
+import { useTheme } from '../lib/ThemeContext';
 
 // Icon lookup map for dynamic icon resolution from config strings
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -21,6 +22,13 @@ export function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
+  const fieldBg     = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.04)';
+  const fieldBorder = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)';
+  const fieldFocus  = () => ({ borderColor: 'rgba(16,185,129,0.6)', boxShadow: '0 0 0 3px rgba(16,185,129,0.12)' });
+  const fieldBlur   = () => ({ borderColor: fieldBorder, boxShadow: '' });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -142,7 +150,7 @@ export function ContactForm() {
                     <div
                       key={item.label}
                       className="flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:scale-[1.01] group cursor-default"
-                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+                      style={{ background: isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.03)', border: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.07)' }}
                       role="listitem"
                     >
                       <div
@@ -168,8 +176,8 @@ export function ContactForm() {
             <div
               className="slide-in-right p-8 rounded-2xl"
               style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.03)',
+                border: isLight ? '1px solid rgba(0,0,0,0.10)' : '1px solid rgba(255,255,255,0.08)',
                 backdropFilter: 'blur(12px)',
                 transitionDelay: '0.15s',
               }}
@@ -206,9 +214,9 @@ export function ContactForm() {
                         placeholder={form.namePlaceholder}
                         autoComplete="name"
                         className="w-full px-4 py-3 text-white placeholder-white/30 focus:outline-none transition-all duration-300 rounded-xl"
-                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}
-                        onFocus={e => { e.currentTarget.style.borderColor = 'rgba(16,185,129,0.5)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.05)'; }}
-                        onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.boxShadow = ''; }}
+                        style={{ background: fieldBg, border: `1px solid ${fieldBorder}` }}
+                        onFocus={e => { Object.assign(e.currentTarget.style, fieldFocus()); }}
+                        onBlur={e => { Object.assign(e.currentTarget.style, fieldBlur()); }}
                       />
                     </div>
 
@@ -227,9 +235,9 @@ export function ContactForm() {
                         placeholder={form.emailPlaceholder}
                         autoComplete="email"
                         className="w-full px-4 py-3 text-white placeholder-white/30 focus:outline-none transition-all duration-300 rounded-xl"
-                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}
-                        onFocus={e => { e.currentTarget.style.borderColor = 'rgba(16,185,129,0.5)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.05)'; }}
-                        onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.boxShadow = ''; }}
+                        style={{ background: fieldBg, border: `1px solid ${fieldBorder}` }}
+                        onFocus={e => { Object.assign(e.currentTarget.style, fieldFocus()); }}
+                        onBlur={e => { Object.assign(e.currentTarget.style, fieldBlur()); }}
                       />
                     </div>
                   </div>
@@ -265,10 +273,18 @@ export function ContactForm() {
                         name="visitors"
                         value={formData.visitors}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-sm text-white focus:outline-none focus:border-green-500 transition-colors"
+                        className="w-full px-4 py-3 rounded-xl focus:outline-none transition-colors"
+                        style={{
+                          background: fieldBg,
+                          border: `1px solid ${fieldBorder}`,
+                          color: isLight ? '#1c1c1c' : '#ffffff',
+                          colorScheme: isLight ? 'light' : 'dark',
+                        }}
+                        onFocus={e => { e.currentTarget.style.borderColor = 'rgba(16,185,129,0.6)'; }}
+                        onBlur={e => { e.currentTarget.style.borderColor = fieldBorder; }}
                       >
                         {form.visitorsOptions.map((option) => (
-                          <option key={option} value={option} className="bg-[#0a1628]">{option}</option>
+                          <option key={option} value={option} className={isLight ? '' : 'bg-[#0a1628]'}>{option}</option>
                         ))}
                       </select>
                     </div>
