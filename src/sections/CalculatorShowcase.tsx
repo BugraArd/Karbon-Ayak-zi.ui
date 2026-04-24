@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Calculator, Sparkles, Thermometer, Clock, Zap, Flame, Leaf, AlertCircle, MapPin, Info, Car } from 'lucide-react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../components/ui/tooltip';
 import { calculatorShowcaseConfig } from '../config';
-import { smoothScrollToSection } from '../lib/smoothScroll';
 import { useTheme } from '../lib/ThemeContext';
 
 // Icon lookup map for dynamic icon resolution from config strings
